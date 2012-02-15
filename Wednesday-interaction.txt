@@ -1,0 +1,113 @@
+mat@bus ~/p/haskell-workshop-xenclient-2010-feb $ ghci
+GHCi, version 7.0.3: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+Loading package ffi-1.0 ... linking ... done.
+Prelude> fmap negate [0,1,2]
+[0,-1,-2]
+Prelude> fmap negate Nothing
+Nothing
+Prelude> fmap negate (Just 2)
+Just (-2)
+Prelude> :t fmap
+fmap :: Functor f => (a -> b) -> f a -> f b
+Prelude> :t fmap negate
+fmap negate :: (Num b, Functor f) => f b -> f b
+Prelude> max 3 5
+5
+Prelude> :t max 3
+max 3 :: (Ord a, Num a) => a -> a
+Prelude> let m = max 3
+Prelude> :t m
+m :: Integer -> Integer
+Prelude> m 5
+5
+Prelude> m 2
+3
+Prelude> let my_max (x,y) = max x y
+Prelude> :t my_max
+my_max :: Ord a => (a, a) -> a
+Prelude> take 10 "hello world"
+"hello worl"
+Prelude> :t foldr
+foldr :: (a -> b -> b) -> b -> [a] -> b
+Prelude> foldr (+) 0 (1:2:3:4:[])
+10
+Prelude> foldr (+) 3 (1:2:3:4:[])
+13
+Prelude> take 10 "hello world"
+"hello worl"
+Prelude>drop 10 "hello world"
+"d"
+Prelude> drop 10 "hello world !!!"
+"d !!!"
+Prelude> :t snd
+snd :: (a, b) -> b
+Prelude> :t getContents
+getContents :: IO String
+Prelude> let text = getContents
+Prelude> :t text
+text :: IO String
+Prelude> :t (>>=)
+(>>=) :: Monad m => m a -> (a -> m b) -> m b
+Prelude> :t read
+read :: Read a => String -> a
+Prelude> :load Tail.hs
+[1 of 1] Compiling Main             ( Tail.hs, interpreted )
+Ok, modules loaded: Main.
+*Main> :t empty
+empty :: Queue q => q a
+*Main> let our_empty = empty :: SimplestQueue Int
+*Main> empty
+
+<interactive>:1:1:
+    Ambiguous type variable `q0' in the constraint:
+      (Queue q0) arising from a use of `empty'
+    Probable fix: add a type signature that fixes these type variable(s)
+    In the expression: empty
+    In an equation for `it': it = empty
+*Main> :load Tail.hs
+[1 of 1] Compiling Main             ( Tail.hs, interpreted )
+Ok, modules loaded: Main.
+*Main> let our_empty = empty :: SimplestQueue Int
+*Main> empty
+
+<interactive>:1:1:
+    Ambiguous type variable `q0' in the constraint:
+      (Queue q0) arising from a use of `empty'
+    Probable fix: add a type signature that fixes these type variable(s)
+    In the expression: empty
+    In an equation for `it': it = empty
+*Main> our_empty
+SimplestQueue []e
+*Main> enqueue 1 our_empty
+SimplestQueue [1]
+*Main> enqeue 2 (enqueue 1 our_empty)
+
+<interactive>:1:1: Not in scope: `enqeue'
+*Main> enqueue 2 (enqueue 1 our_empty)
+SimplestQueue [2,1]
+*Main> toList (enqueue 2 (enqueue 1 our_empty))
+[1,2]
+*Main> let first_part = [1,2,3,4]
+*Main> foldl (flip enqueue) our_empty first_part
+
+<interactive>:1:32:
+    Couldn't match expected type `Int' with actual type `Integer'
+    Expected type: [Int]
+      Actual type: [Integer]
+    In the third argument of `foldl', namely `first_part'
+    In the expression: foldl (flip enqueue) our_empty first_part
+*Main> let first_part = [1,2,3,4] :: [Int]
+*Main> :t our_empty
+our_empty :: SimplestQueue Int
+*Main> foldl (flip enqueue) our_empty first_part
+SimplestQueue [4,3,2,1]
+*Main> :t flip
+flip :: (a -> b -> c) -> (b -> a -> c)
+*Main> :t flip enqueue
+flip enqueue :: Queue q => q a -> a -> q a
+*Main> :t foldl
+foldl :: (a -> b -> a) -> a -> [b] -> a
+*Main> 
