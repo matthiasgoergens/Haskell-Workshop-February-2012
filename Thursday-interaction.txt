@@ -1,0 +1,613 @@
+mat@bus ~/p/haskell-workshop-xenclient-2010-feb $ ghci
+GHCi, version 7.0.3: http://www.haskell.org/ghc/  :? for help
+Loading package ghc-prim ... linking ... done.
+Loading package integer-gmp ... linking ... done.
+Loading package base ... linking ... done.
+Loading package ffi-1.0 ... linking ... done.
+Prelude> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.
+*Main> Just 1
+Just 1
+*Main> fmap show (Just 1)
+Just "1"
+*Main> fmap show []
+[]
+*Main> fmap show [1,2,3]
+["1","2","3"]
+*Main> :t print
+print :: Show a => a -> IO ()
+*Main> let p = print 10
+*Main> :t p
+p :: IO ()
+*Main> p
+10
+*Main> p
+10
+*Main> p
+10
+*Main> p
+10
+*Main> :t p
+p :: IO ()
+*Main> 
+*Main> 10
+10
+*Main> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.
+*Main> singleton 1
+
+<interactive>:1:1:
+    Ambiguous type variable `pf0' in the constraint:
+      (PointedFunctor pf0) arising from a use of `singleton'
+    Probable fix: add a type signature that fixes these type variable(s)
+    In the expression: singleton 1
+    In an equation for `it': it = singleton 1
+*Main> singleton 1 :: [Int]
+[1]
+*Main> singleton 1 :: Maybe Int
+Just 1
+*Main> :t singleton 1
+
+<interactive>:1:1: Not in scope: `singlet'
+*Main> :t singleton 1
+singleton 1 :: (PointedFunctor pf, Num a) => pf a
+*Main> :t (singleton :: Maybe) 1
+
+<interactive>:1:2:
+    Expecting an ordinary type, but found a type of kind * -> *
+    In an expression type signature: Maybe
+    In the expression: singleton :: Maybe
+    In the expression: (singleton :: Maybe) 1
+*Main> :t singleton 1 :: Maybe Int
+singleton 1 :: Maybe Int :: Maybe Int
+*Main> :t (singleton 1 :: Maybe Int)
+(singleton 1 :: Maybe Int) :: Maybe Int
+*Main> :m Prelude
+Prelude> :m + System.Environment
+Prelude System.Environment> getArgs
+[]
+Prelude System.Environment> :m Data.Time.Clock
+Prelude Data.Time.Clock> getCurrentTime
+Loading package old-locale-1.0.0.2 ... linking ... done.
+Loading package time-1.2.0.3 ... linking ... done.
+Prelude Data.Time.Clock> getCurrentTime
+Prelude Data.Time.Clock> print =<< getCurrentTime
+
+<interactive>:1:1:
+    No instance for (Show UTCTime)
+      arising from a use of `print'
+    Possible fix: add an instance declaration for (Show UTCTime)
+    In the first argument of `(=<<)', namely `print'
+    In the expression: print =<< getCurrentTime
+    In an equation for `it': it = print =<< getCurrentTime
+Prelude Data.Time.Clock> print =<< getCurrentTime
+
+<interactive>:1:1:
+    No instance for (Show UTCTime)
+      arising from a use of `print'
+    Possible fix: add an instance declaration for (Show UTCTime)
+    In the first argument of `(=<<)', namely `print'
+    In the expression: print =<< getCurrentTime
+    In an equation for `it': it = print =<< getCurrentTime
+Prelude Data.Time.Clock> Loading package time-1.2.0.3 ... linking ... done.
+
+<interactive>:1:51: parse error (possibly incorrect indentation)
+Prelude Data.Time.Clock> let a = hGetContents =<< openFile "/etc/fstab"
+
+<interactive>:1:9: Not in scope: `hGetContents'
+
+<interactive>:1:26: Not in scope: `openFile'
+Prelude Data.Time.Clock> :m + System.IO
+Prelude Data.Time.Clock System.IO> <interactive>:1:26: Not in scope: `openFile'
+
+<interactive>:1:1: parse error on input `<'
+Prelude Data.Time.Clock System.IO> let a = hGetContents =<< openFile "/etc/fstab"
+
+<interactive>:1:26:
+    Couldn't match expected type `IO Handle'
+                with actual type `IOMode -> IO Handle'
+    In the return type of a call of `openFile'
+    In the second argument of `(=<<)', namely `openFile "/etc/fstab"'
+    In the expression: hGetContents =<< openFile "/etc/fstab"
+Prelude Data.Time.Clock System.IO> let a = hGetContents =<< openFile "/etc/fstab" ReadMode
+Prelude Data.Time.Clock System.IO> a
+"# \n# /etc/fstab: static file system information\n#\n# <file system>\t<dir>\t<type>\t<options>\t<dump>\t<pass>\ntmpfs\t\t/tmp\ttmpfs\tnodev,nosuid,relatime\t0\t0\nLABEL=archboot /boot ext4 relatime 0 1\nLABEL=archroot / ext4 relatime 0 1\nLABEL=swapspace swap swap defaults 0 0\n#/dev/sr0 /mnt/dvd auto defaults 0 0\n"
+Prelude Data.Time.Clock System.IO> take 5 "Hello World"
+"Hello"
+Prelude Data.Time.Clock System.IO> let a = hGetContents =<< openFile "/etc/fstab" ReadMode
+Prelude Data.Time.Clock System.IO> :t a
+a :: IO String
+Prelude Data.Time.Clock System.IO> fmap (take 5) a
+"# \n# "
+Prelude Data.Time.Clock System.IO> fmap length a
+297
+Prelude Data.Time.Clock System.IO> 297
+297
+Prelude Data.Time.Clock System.IO> length a
+
+<interactive>:1:8:
+    Couldn't match expected type `[a0]' with actual type `IO String'
+    In the first argument of `length', namely `a'
+    In the expression: length a
+    In an equation for `it': it = length a
+Prelude Data.Time.Clock System.IO> :t length
+length :: [a] -> Int
+Prelude Data.Time.Clock System.IO> :t a
+a :: IO String === IO [Char]
+Prelude Data.Time.Clock System.IO> :t return
+return :: Monad m => a -> m a
+Prelude Data.Time.Clock System.IO> return 1 :: (Maybe Int)
+Just 1
+Prelude Data.Time.Clock System.IO> return 1 :: [Int]
+[1]
+Prelude Data.Time.Clock System.IO> :t return 1 :: IO Int
+1
+Prelude Data.Time.Clock System.IO> :t return 1 :: IO Int
+return 1 :: IO Int :: IO Int
+Prelude Data.Time.Clock System.IO> 
+Prelude Data.Time.Clock System.IO> :t fmap . fmap
+fmap . fmap
+  :: (Functor f1, Functor f) => (a -> b) -> f (f1 a) -> f (f1 b)
+Prelude Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:66:1:
+    Invalid type signature: take 5 :: String -> String
+    Should be of form <variable> :: <type>
+Failed, modules loaded: none.
+Prelude Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:51:5:
+    Misplaced type signature: <*> :: [a -> b] -> [a] -> [b]
+
+Typeclasses.hs:59:5: Not in scope: `hGetContents'
+
+Typeclasses.hs:59:22: Not in scope: `openFile'
+Failed, modules loaded: none.
+Prelude Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:51:5:
+    Misplaced type signature: <*> :: [a -> b] -> [a] -> [b]
+Failed, modules loaded: none.
+Prelude Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.
+*Main Data.Time.Clock System.IO> [show] <*> [1]
+["1"]
+*Main Data.Time.Clock System.IO> [show] <*> [1, 2]
+["1"]
+*Main Data.Time.Clock System.IO> [show, show] <*> [1, 2]
+["1","2"]
+*Main Data.Time.Clock System.IO> [show, (\x -> "This is x: " ++ show x)] <*> [1, 2]
+["1","This is x: 2"]
+*Main Data.Time.Clock System.IO> :t zipWith
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+*Main Data.Time.Clock System.IO> :t zipWith ($)
+zipWith ($) :: [b -> c] -> [b] -> [c]
+*Main Data.Time.Clock System.IO> -- (map apply list-of-function first-list-of-args)
+*Main Data.Time.Clock System.IO> :t (++)
+(++) :: [a] -> [a] -> [a]
+*Main Data.Time.Clock System.IO> :t (:)
+
+<interactive>:1:2: parse error (possibly incorrect indentation)
+*Main Data.Time.Clock System.IO> :t (:)
+(:) :: a -> [a] -> [a]
+*Main Data.Time.Clock System.IO> zipWith ($) :: [b -> c] -> [b] -> [c]
+
+<interactive>:1:1:
+    No instance for (Show ([b0 -> c0] -> [b0] -> [c0]))
+      arising from a use of `print'
+    Possible fix:
+      add an instance declaration for (Show ([b0 -> c0] -> [b0] -> [c0]))
+    In a stmt of an interactive GHCi command: print it
+*Main Data.Time.Clock System.IO> :t (
+
+<interactive>:1:2: parse error (possibly incorrect indentation)
+*Main Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.
+*Main Data.Time.Clock System.IO> [show, (\x -> "This is x: " ++ show x)] <*> [1, 2]
+["1","2","This is x: 1","This is x: 2"]
+*Main Data.Time.Clock System.IO> :t (,)
+(,) :: a -> b -> (a, b)
+*Main Data.Time.Clock System.IO> (,) 1 2
+(1,2)
+*Main Data.Time.Clock System.IO> (,) 1 "hello"
+(1,"hello")
+*Main Data.Time.Clock System.IO> singleton (,) <*> "bob" <*> [0,1,2]
+[('b',0),('b',1),('b',2),('o',0),('o',1),('o',2),('b',0),('b',1),('b',2)]
+*Main Data.Time.Clock System.IO> (singleton (,) <*> "bob") <*> [0,1,2]
+[('b',0),('b',1),('b',2),('o',0),('o',1),('o',2),('b',0),('b',1),('b',2)]
+*Main Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.(
+*Main Data.Time.Clock System.IO> cartesian
+[('b',0),('b',1),('b',2),('o',0),('o',1),('o',2),('b',0),('b',1),('b',2)]
+*Main Data.Time.Clock System.IO> :t singleton (,)
+singleton (,) :: PointedFunctor pf => pf (a -> b -> (a, b))
+*Main Data.Time.Clock System.IO> :t (,)
+(,) :: a -> b -> (a, b)
+*Main Data.Time.Clock System.IO> (,) 1 "hello"
+(1,"hello")
+*Main Data.Time.Clock System.IO> :t singleton (,)
+singleton (,) :: PointedFunctor pf => pf (a -> b -> (a, b))
+*Main Data.Time.Clock System.IO> :t singleton (,) <*> "bob"
+singleton (,) <*> "bob" :: [b -> (Char, b)]
+*Main Data.Time.Clock System.IO> :t singleton (,) <*> "bob" <*> [1]
+singleton (,) <*> "bob" <*> [1] :: Num a => [(Char, a)]
+*Main Data.Time.Clock System.IO> :t singleton (,) <*> "bob" <*> [1::Int]
+singleton (,) <*> "bob" <*> [1::Int] :: [(Char, Int)]
+*Main Data.Time.Clock System.IO> :t singleton (,) <*> "bob" <*> [1::Int, 2]
+singleton (,) <*> "bob" <*> [1::Int, 2] :: [(Char, Int)]
+*Main Data.Time.Clock System.IO> singleton (,) <*> "bob" <*> [1::Int, 2]
+[('b',1),('b',2),('o',1),('o',2),('b',1),('b',2)]
+*Main Data.Time.Clock System.IO> :t singleton (,) <*> Just 1 <*> Just "b"
+singleton (,) <*> Just 1 <*> Just "b" :: Num a => Maybe (a, [Char])
+*Main Data.Time.Clock System.IO> :t singleton (,) <*> Just (1 :: Int) <*> Just "b"
+singleton (,) <*> Just (1 :: Int) <*> Just "b"
+  :: Maybe (Int, [Char])
+*Main Data.Time.Clock System.IO> :t Just (1 :: Int) <*> Just "b"
+
+<interactive>:1:7:
+    Couldn't match expected type `a0 -> b0' with actual type `Int'
+    In the first argument of `Just', namely `(1 :: Int)'
+    In the first argument of `(<*>)', namely `Just (1 :: Int)'
+    In the expression: Just (1 :: Int) <*> Just "b"
+*Main Data.Time.Clock System.IO> :t (singleton (,) <*> singleton (1 :: Int) <*> singleton "b") :: Maybe (Int, String)
+(singleton (,) <*> singleton (1 :: Int) <*> singleton "b") :: Maybe (Int, String)
+  :: Maybe (Int, String)
+*Main Data.Time.Clock System.IO> :t (singleton (,) <*> singleton (1 :: Int) <*> Nothing) :: Maybe (Int, String)
+(singleton (,) <*> singleton (1 :: Int) <*> Nothing) :: Maybe (Int, String)
+  :: Maybe (Int, String)
+*Main Data.Time.Clock System.IO> (singleton (,) <*> singleton (1 :: Int) <*> Nothing) :: Maybe (Int, String)
+Nothing
+*Main Data.Time.Clock System.IO> (singleton (,) <*> singleton (1 :: Int) <*> Nothing) :: Maybe (Int, String)
+Nothing
+*Main Data.Time.Clock System.IO> (singleton (,) <*> singleton (1 :: Int) <*> singleton "b") :: Maybe (Int, String)
+Just (1,"b")
+*Main Data.Time.Clock System.IO> (,) 1 "a"
+(1,"a")
+*Main Data.Time.Clock System.IO> singleton (,) <*> 1 <*> "a"
+
+<interactive>:1:19:
+    No instance for (Num [a0])
+      arising from the literal `1'
+    Possible fix: add an instance declaration for (Num [a0])
+    In the second argument of `(<*>)', namely `1'
+    In the first argument of `(<*>)', namely `singleton (,) <*> 1'
+    In the expression: singleton (,) <*> 1 <*> "a"
+*Main Data.Time.Clock System.IO> singleton (,) <*> [1] <*> ["a"]
+[(1,"a")]
+*Main Data.Time.Clock System.IO> (singleton (,) <*> [1]) <*> ["a"]
+[(1,"a")]
+*Main Data.Time.Clock System.IO> :t (singleton (,) <*> [1])
+(singleton (,) <*> [1]) :: Num a => [b -> (a, b)]
+*Main Data.Time.Clock System.IO> :t (singleton (,) <*> [1])
+(singleton (,) <*> [1]) :: Num a => [b -> (a, b)]
+*Main Data.Time.Clock System.IO> :t (,)
+(,) :: a -> b -> (a, b)
+*Main Data.Time.Clock System.IO> :t singleton (,)
+singleton (,) :: PointedFunctor pf => pf (a -> b -> (a, b))
+*Main Data.Time.Clock System.IO> 
+*Main Data.Time.Clock System.IO> (singleton max <*> [1,2,3] <*> [0,1,2])
+[1,1,2,2,2,2,3,3,3]
+*Main Data.Time.Clock System.IO> [max] <*> [1,2,3] <*> [0,1,2]
+[1,1,2,2,2,2,3,3,3]
+*Main Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:59:18: parse error on input `='
+Failed, modules loaded: none.
+Prelude Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.
+*Main Data.Time.Clock System.IO> max <$> [1,2,3] <*> [0,1,2]
+[1,1,2,2,2,2,3,3,3]
+*Main Data.Time.Clock System.IO> (,) <$> [1,2,3] <*> [0,1,2]
+[(1,0),(1,1),(1,2),(2,0),(2,1),(2,2),(3,0),(3,1),(3,2)]
+*Main Data.Time.Clock System.IO> (,) <$> [1,2,3] <*> "bob"
+[(1,'b'),(1,'o'),(1,'b'),(2,'b'),(2,'o'),(2,'b'),(3,'b'),(3,'o'),(3,'b')]
+*Main Data.Time.Clock System.IO> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+Ok, modules loaded: Main.
+*Main Data.Time.Clock System.IO> (,) <$> [1,2,3] <*> "bob"
+[(1,'b'),(1,'o'),(1,'b'),(2,'b'),(2,'o'),(2,'b'),(3,'b'),(3,'o'),(3,'b')]
+*Main Data.Time.Clock System.IO> fmap (,) [1,2,3] <*> "bob"
+[(1,'b'),(1,'o'),(1,'b'),(2,'b'),(2,'o'),(2,'b'),(3,'b'),(3,'o'),(3,'b')]
+*Main Data.Time.Clock System.IO> 
+*Main Data.Time.Clock System.IO> return 1
+1
+*Main Data.Time.Clock System.IO> return 1 :: [Int]
+[1]
+*Main Data.Time.Clock System.IO> return 1 :: Maybe Int
+
+<interactive>:1:1:
+    No instance for (Monad Maybe)
+      arising from a use of `return'
+    Possible fix: add an instance declaration for (Monad Maybe)
+    In the expression: return 1 :: Maybe Int
+    In an equation for `it': it = return 1 :: Maybe Int
+*Main Data.Time.Clock System.IO> :m Prelude
+Prelude> return 1 :: Maybe Int
+Just 1
+Prelude> return 1 :: IO Int
+1
+Prelude> let action1 = return 1
+
+<interactive>:1:15:
+    Ambiguous type variable `m0' in the constraint:
+      (Monad m0) arising from a use of `return'
+    Probable fix: add a type signature that fixes these type variable(s)
+    In the expression: return 1
+    In an equation for `action1': action1 = return 1
+Prelude> let action1 = return 1 :: IO INt
+
+<interactive>:1:30: Not in scope: type constructor or class `INt'
+Prelude> let action1 = return 1 :: IO Int
+Prelude> let action2 = return "bob" :: IO Int
+
+<interactive>:1:22:
+    Couldn't match expected type `Int' with actual type `[Char]'
+    In the first argument of `return', namely `"bob"'
+    In the expression: return "bob" :: IO Int
+    In an equation for `action2': action2 = return "bob" :: IO Int
+Prelude> let action2 = return "bob" :: IO String
+Prelude> :m + Control.Applicative
+Prelude Control.Applicative> :t (<*>)
+(<*>) :: Applicative f => f (a -> b) -> f a -> f b
+Prelude Control.Applicative> :t (,) <$> action1 <*> action2 
+(1,"bob")
+Prelude Control.Applicative> :t (,) <$> action1 <*> action2 
+(,) <$> action1 <*> action2 :: IO (Int, String)
+Prelude Control.Applicative> :t (=<<)
+(=<<) :: Monad m => (a -> m b) -> m a -> m b
+Prelude Control.Applicative> :t (>>=)
+(>>=) :: Monad m => m a -> (a -> m b) -> m b
+Prelude Control.Applicative> :t print
+print :: Show a => a -> IO ()
+Prelude Control.Applicative> :t getArgs
+
+<interactive>:1:1: Not in scope: `getArgs'
+Prelude Control.Applicative> :m + System.Environment
+Prelude Control.Applicative System.Environment> :t getArgs
+getArgs :: IO [String]
+Prelude Control.Applicative System.Environment> getArgs >>= print
+[]
+Prelude Control.Applicative System.Environment> :t getArgs >>= print
+getArgs >>= print :: IO ()
+Prelude Control.Applicative System.Environment> :t (return "bob") >>= print
+(return "bob") >>= print :: IO ()
+Prelude Control.Applicative System.Environment> (return "bob") >>= print
+"bob"
+Prelude Control.Applicative System.Environment> (return 3) >>= print
+3
+Prelude Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:85:5: parse error (possibly incorrect indentation)
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:101:1: parse error (possibly incorrect indentation)
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:101:1: parse error (possibly incorrect indentation)
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:101:1: parse error (possibly incorrect indentation)
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:88:10:
+    Warning: No explicit method nor default method for `return'
+    In the instance declaration for `Monad Maybe'
+Ok, modules loaded: Main.
+*Main Control.Applicative System.Environment> main
+my first line
+my second line
+("my first line","my second line")
+*Main Control.Applicative System.Environment> :t getLine
+getLine :: IO String:
+*Main Control.Applicative System.Environment> :t (\line1 -> getLine >>=  (\line2 -> print (line1, line2)))
+
+
+<interactive>:1:23: parse error (possibly incorrect indentation)
+*Main Control.Applicative System.Environment> 
+<interactive>:1:33: parse error on input `)'
+*Main Control.Applicative System.Environment> *Main Control.Applicative System.Environment> :t (\line1 -> getLine >>=  (\line2 -> print (line1, line2)))
+
+(\line1 -> getLine >>=  (\line2 -> print (line1, line2)))
+  :: Show t => t -> IO ()
+*Main Control.Applicative System.Environment> *Main Control.Applicative System.Environment> :t (\line1 -> getLine >>=  (\line2 -> print (line1, line2))) 1
+(\line1 -> getLine >>=  (\line2 -> print (line1, line2))) 1
+  :: IO ()
+*Main Control.Applicative System.Environment> (\line1 -> getLine >>=  (\line2 -> print (line1, line2))) 1
+my second line
+(1,"my second line")
+*Main Control.Applicative System.Environment> (\line1 -> getLine >>=  (\line2 -> print (line1, line2))) (Just 2)
+etuhseoa
+(Just 2,"etuhseoa")
+*Main Control.Applicative System.Environment> (\line1 -> getLine >>=  (\line2 -> print (line1, line2))) "String"
+euthesao
+("String","euthesao")
+*Main Control.Applicative System.Environment> :t (\line1 -> getLine >>=  (\line2 -> print (line1, line2)))
+(\line1 -> getLine >>=  (\line2 -> print (line1, line2)))
+  :: Show t => t -> IO ()
+*Main Control.Applicative System.Environment> :t (\line1 -> getLine >>=  (\line2 -> print (line1, line2))) 1
+(\line1 -> getLine >>=  (\line2 -> print (line1, line2))) 1
+  :: IO ()
+*Main Control.Applicative System.Environment> getLine >>= 
+
+<interactive>:1:12: parse error (possibly incorrect indentation)
+*Main Control.Applicative System.Environment> :t (getLine >>=)
+(getLine >>=) :: (String -> IO b) -> IO b
+*Main Control.Applicative System.Environment> :t (getLine >>=) print
+(getLine >>=) print :: IO ()
+*Main Control.Applicative System.Environment> (getLine >>=) print
+eoaue
+"eoaue"
+*Main Control.Applicative System.Environment> (getLine >>=) (\line -> print ("blub: " ++ line))
+thause
+"blub: thause"
+*Main Control.Applicative System.Environment>
+*Main Control.Applicative System.Environment> :t (>>=) getLine
+(>>=) getLine :: (String -> IO b) -> IO b
+*Main Control.Applicative System.Environment> (>>=) getLine (\line -> print ("blub: " ++ line))
+eoue
+"blub: eoue"
+*Main Control.Applicative System.Environment> 
+*Main Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:105:21: Not in scope: `getline'
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load Typeclasses.hs
+[1 of 1] Compiling Main             ( Typeclasses.hs, interpreted )
+
+Typeclasses.hs:88:10:
+    Warning: No explicit method nor default method for `return'
+    In the instance declaration for `Monad Maybe'
+Ok, modules loaded: Main.
+*Main Control.Applicative System.Environment> :t test
+test :: Monad m => m t -> m t1 -> m (t, t1)
+*Main Control.Applicative System.Environment> test (return 1) (return "bob") :: IO (Int, String)
+(1,"bob")
+*Main Control.Applicative System.Environment> test (return 1) (return "bob") :: Maybe (Int, String)
+*** Exception: Typeclasses.hs:88:10-20: No instance nor default method for class operation GHC.Base.return
+
+*Main Control.Applicative System.Environment> test (return 1) (return "bob") :: [(Int, String)]
+[(1,"bob")]
+*Main Control.Applicative System.Environment> test [1] ["bob"] :: [(Int, String)]
+[(1,"bob")]
+*Main Control.Applicative System.Environment> test [1,2,3] ["bob"] :: [(Int, String)]
+[(1,"bob"),(2,"bob"),(3,"bob")]
+*Main Control.Applicative System.Environment> test [1,2,3] ["bob", "karl"] :: [] (Int, String)
+[(1,"bob"),(1,"karl"),(2,"bob"),(2,"karl"),(3,"bob"),(3,"karl")]
+*Main Control.Applicative System.Environment> 
+*Main Control.Applicative System.Environment> test [1,2,3] ["bob", "karl"] :: [] (Int, String)
+[(1,"bob"),(1,"karl"),(2,"bob"),(2,"karl"),(3,"bob"),(3,"karl")]
+*Main Control.Applicative System.Environment> test [1,2,3] ["bob", "karl"] :: IO (Int, String)
+
+<interactive>:1:6:
+    Couldn't match expected type `IO' with actual type `[]'
+    In the first argument of `test', namely `[1, 2, 3]'
+    In the expression:
+        test [1, 2, 3] ["bob", "karl"] :: IO (Int, String)
+    In an equation for `it':
+        it = test [1, 2, ....] ["bob", "karl"] :: IO (Int, String)
+*Main Control.Applicative System.Environment> test getLine getLine :: IO (Int, String)
+
+<interactive>:1:6:
+    Couldn't match expected type `Int' with actual type `[Char]'
+    Expected type: IO Int
+      Actual type: IO String
+    In the first argument of `test', namely `getLine'
+    In the expression: test getLine getLine :: IO (Int, String)
+*Main Control.Applicative System.Environment> test getLine getLine :: IO (String, String)
+line1
+line2
+("line1","line2")
+*Main Control.Applicative System.Environment> :t return
+return :: Monad m => a -> m a
+*Main Control.Applicative System.Environment> :t (>>=)
+(>>=) :: Monad m => m a -> (a -> m b) -> m b
+*Main Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+
+StateMonad.hs:9:5:
+    Misplaced type signature:
+    >>= ::
+      StateMonad state a
+      -> (a -> StateMonad state b) -> StateMonad state b
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+
+StateMonad.hs:18:8:
+    `StateMonad (state, state)' is not applied to enough type arguments
+    Expected kind `*',
+    but `StateMonad (state, state)' has kind `* -> *'
+    In the type signature for `get': get :: StateMonad (state, state)
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+
+StateMonad.hs:22:17:
+    The function `s' is applied to one argument,
+    but its type `StateMonad s a' has none
+    In the expression: s s0
+    In an equation for `runState': runState s0 s = s s0
+Failed, modules loaded: none.
+Prelude Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> put
+
+<interactive>:1:1:
+    No instance for (Show (state0 -> StateMonad state0 ()))
+      arising from a use of `print'
+    Possible fix:
+      add an instance declaration for
+      (Show (state0 -> StateMonad state0 ()))
+    In a stmt of an interactive GHCi command: print it
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState undefined StateFul
+
+<interactive>:1:20: Not in scope: data constructor `StateFul'
+*StateMonad Control.Applicative System.Environment> runState undefined StateFull
+
+<interactive>:1:20: Not in scope: data constructor `StateFull'
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState undefined StateFull
+
+<interactive>:1:20: Not in scope: data constructor `StateFull'
+*StateMonad Control.Applicative System.Environment> runState undefined stateFull
+
+<interactive>:1:20: Not in scope: `stateFull'
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState undefined stateFull
+(*** Exception: Prelude.undefined
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState 15 stateFul
+(15,15)
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState 15 stateFul
+(10,10)
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState 15 stateFul
+(10,"Hello, big")
+*StateMonad Control.Applicative System.Environment> runState 15 stateFul
+(10,"Hello, big")
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState 15 stateFul
+(8,"Hello, small")
+*StateMonad Control.Applicative System.Environment> :load StateMonad.hs
+[1 of 1] Compiling StateMonad       ( StateMonad.hs, interpreted )
+Ok, modules loaded: StateMonad.
+*StateMonad Control.Applicative System.Environment> runState 15 stateFul
+(12,"Hello, big")
+*StateMonad Control.Applicative System.Environment> 

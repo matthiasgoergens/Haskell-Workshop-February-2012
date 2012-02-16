@@ -1,3 +1,10 @@
+Thursday
+===
+
+See StateMonad.hs, Thursday-interaction.txt, and Typeclasses.hs
+
+Also have a look into the XenClient repository network.git.  We had a brief look at it's network slave daemon today.
+
 Wednesday
 ===
 
